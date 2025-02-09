@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naming Protocol Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Naming Protocol Generator</h1>
+    <form id="namingForm">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName" placeholder="Enter project name">
+
+        <label for="clientName">Client Name/Entity:</label>
+        <input type="text" id="clientName" placeholder="Enter client name">
+
+        <label for="documentType">Type of Document:</label>
+        <select id="documentType">
+            <option value="Certificate of Engagement">Certificate of Engagement</option>
+            <option value="Certificate of Employment">Certificate of Employment</option>
+            <option value="Certificate of Authorship">Certificate of Authorship</option>
+            <option value="Producer Services Agreement">Producer Services Agreement</option>
+            <option value="Alternative Dispute Provisions">Alternative Dispute Provisions</option>
+            <option value="Collaboration Agreement">Collaboration Agreement</option>
+            <option value="Composer Agreement">Composer Agreement</option>
+            <option value="Combined Master Use/Synch License">Combined Master Use/Synch License</option>
+            <option value="Material Correspondence">Material Correspondence</option>
+            <option value="Clinician Time Sheet">Clinician Time Sheet</option>
+            <option value="Example Agreement">Example Agreement</option>
+        </select>
+
+        <label for="date">Date (YYYYMMDD or Week 1, Week 2, etc.):</label>
+        <input type="text" id="date" placeholder="Enter date or week">
+
+        <label for="initials">Your Initials:</label>
+        <input type="text" id="initials" placeholder="Enter your initials">
+
+        <label for="version">Version:</label>
+        <input type="text" id="version" placeholder="Enter version (e.g., V1, V2)">
+
+        <label for="status">Status (optional):</label>
+        <select id="status">
+            <option value="">None</option>
+            <option value="redline">Redline</option>
+            <option value="clean">Clean</option>
+            <option value="execution">Execution Copy</option>
+            <option value="PE">Partially Executed</option>
+            <option value="FE">Fully Executed</option>
+        </select>
+
+        <button type="button" onclick="generateName()">Generate Name</button>
+    </form>
+
+    <h2>Generated Name:</h2>
+    <div class="output" id="output"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}${mm}${dd}`;
+        document.getElementById('date').value = formattedDate;
+    });
+
+    function generateName() {
+        const projectName = document.getElementById('projectName').value.trim();
+        const clientName = document.getElementById('clientName').value.trim();
+        const documentType = document.getElementById('documentType').value;
+        const date = document.getElementById('date').value.trim();
+        const initials = document.getElementById('initials').value.trim();
+        const version = document.getElementById('version').value.trim();
+        const status = document.getElementById('status').value;
+
+        let generatedName = `${projectName || clientName}_${documentType}_${date}`;
+
+        if (initials) {
+            generatedName += `_${initials}`;
+        }
+        if (version) {
+            generatedName += `_${version}`;
+        }
+        if (status) {
+            generatedName += `_${status}`;
+        }
+
+        document.getElementById('output').textContent = generatedName;
+    }
+</script>
+
+</body>
+</html>
