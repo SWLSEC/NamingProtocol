@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEA Email Template Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CEA Email Template Generator</h1>
+</header>
+
+<div class="container">
+    <form id="ceaForm">
+        <label for="clientName">Client's Full Name:</label>
+        <input type="text" id="clientName" placeholder="Enter client's full name">
+
+        <label for="clientEmail">Client's Email:</label>
+        <input type="email" id="clientEmail" placeholder="Enter client's email">
+
+        <button type="button" onclick="generateTemplate()">Generate Email Template</button>
+    </form>
+
+    <h2>Generated Email Template:</h2>
+    <div class="output" id="output"></div>
+</div>
+
+<script>
+    function generateTemplate() {
+        const clientName = document.getElementById('clientName').value.trim();
+        const clientEmail = document.getElementById('clientEmail').value.trim();
+
+        const emailTemplate = `Dear Professor Ravid:
+
+Please find attached a CEA and draft message, ready for DocuSign.
+
+Client (${clientName}) email: ${clientEmail}
+
+Dear ${clientName}:
+
+Attached please find the Client Engagement Agreement, from the Southwestern Law School Entertainment & the Arts Legal Clinic, ready for your signature. The Clinic can begin its pro bono services following your signature. You will receive a signed copy for your records.
+
+On behalf of the Clinic,`;
+
+        document.getElementById('output').textContent = emailTemplate;
+    }
+</script>
+
+</body>
+</html>
