@@ -189,11 +189,12 @@
         let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}`;
 
         if (initials) {
-            generatedName += `_${initials}`;
+            generatedName += `(${initials})`;
         }
         if (version) {
-            generatedName += `_${version}`;
+            generatedName += `(${version})`;
         }
+
         if (status) {
             generatedName += `_${status}`;
         }
