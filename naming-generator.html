@@ -109,10 +109,10 @@
 
 <div class="container">
     <form id="namingForm">
-        <label for="projectName">Project Name:</label>
+        <label for="projectName">Project Name/Client Name/Entity:</label>
         <input type="text" id="projectName" placeholder="Enter project name">
 
-        <label for="clientName">Client Name/Entity:</label>
+        <label for="clientName">Other Party:</label>
         <input type="text" id="clientName" placeholder="Enter client name">
 
         <label for="documentType">Type of Document:</label>
@@ -186,7 +186,7 @@
             return;
         }
 
-        let generatedName = `${projectName || clientName}_${documentType}_${date}`;
+        let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}`;
 
         if (initials) {
             generatedName += `_${initials}`;
