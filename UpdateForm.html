@@ -119,10 +119,13 @@
     </div>
 
     <script>
-        // Automatically fill the current date
+        // Automatically fill the current date using local time
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
+            const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
+            const formattedDate = `${year}-${month}-${day}`;
             document.getElementById('update-date').value = formattedDate;
         });
 
@@ -147,6 +150,4 @@
                 alert('Failed to copy text: ' + err);
             });
         }
-    </script>
-</body>
-</html>
+    </scri
