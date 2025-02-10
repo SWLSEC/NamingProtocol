@@ -74,6 +74,12 @@
         .copy-btn:hover {
             background-color: #218838;
         }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +124,10 @@
         <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
     </div>
 
+    <footer>
+        <p>Designed and Developed by Nolan Silverstein</p>
+    </footer>
+
     <script>
         // Automatically fill the current date using local time
         document.addEventListener('DOMContentLoaded', function() {
@@ -150,4 +160,6 @@
                 alert('Failed to copy text: ' + err);
             });
         }
-    </scri
+    </script>
+</body>
+</html>
