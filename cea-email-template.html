@@ -9,26 +9,36 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #ffffff;
             color: #333;
         }
         header {
-            background-color: #007BFF;
+            background-color: #4B0082; /* Purple color */
             color: white;
-            padding: 20px 0;
+            padding: 10px 0;
             text-align: center;
         }
+        header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: invert(1); /* Invert colors to make logo white */
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
-            margin: 15px 0 5px;
+            margin: 10px 0 5px;
             font-weight: bold;
         }
         input, textarea, button {
@@ -40,31 +50,54 @@
             font-size: 1rem;
         }
         button {
-            background-color: #007BFF;
+            background-color: #4B0082; /* Purple color */
             color: white;
-            border: none;
-            cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #37116E; /* Darker purple */
+            transform: scale(1.05);
         }
         .output {
-            margin-top: 21px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 15px;
             background-color: #f9f9f9;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             white-space: pre-wrap;
             font-family: monospace;
         }
         .copy-btn {
-            background-color: #28A745;
+            background-color: #28A745; /* Green for copy button */
+            font-weight: bold;
             margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .copy-btn:hover {
-            background-color: #218838;
+            background-color: #218838; /* Darker green */
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            button, .copy-btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -90,6 +123,10 @@
     <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
 </div>
 
+<footer>
+    <p>Designed and Developed by Nolan Silverstein</p>
+</footer>
+
 <script>
     function generateTemplate() {
         const clientName = document.getElementById('clientName').value.trim();
@@ -109,10 +146,6 @@
         });
     }
 </script>
-
-<footer>
-    <p>Designed and Developed by Nolan Silverstein</p>
-</footer>
 
 </body>
 </html>
