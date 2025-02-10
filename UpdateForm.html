@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Update Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .update-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .input-field {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .output-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .copy-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28A745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="update-container">
+        <div class="header">
+            <h1>Daily Update</h1>
+            <label><strong>Date:</strong>
+                <input type="date" id="update-date" class="input-field" />
+            </label>
+            <label><strong>Project/Task Name:</strong>
+                <input type="text" id="project-name" class="input-field" placeholder="Enter project/task name" />
+            </label>
+        </div>
+
+        <div class="section">
+            <h2>Progress</h2>
+            <textarea id="progress-summary" class="input-field" rows="5" placeholder="Summarize key actions completed"></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Status</h2>
+            <textarea id="current-status" class="input-field" rows="5" placeholder="Describe the current status of the project"></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Next Steps</h2>
+            <textarea id="next-steps" class="input-field" rows="5" placeholder="List the next immediate actions"></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Blockers</h2>
+            <textarea id="questions-dependencies" class="input-field" rows="5" placeholder="Note any outstanding questions or dependencies"></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="generateUpdate()">Generate Update</button>
+
+        <div class="output-container" id="output-container">
+            <h2>Generated Update</h2>
+            <pre id="output-text"></pre>
+        </div>
+
+        <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function generateUpdate() {
+            const date = document.getElementById('update-date').value;
+            const projectName = document.getElementById('project-name').value;
+            const progressSummary = document.getElementById('progress-summary').value;
+            const currentStatus = document.getElementById('current-status').value;
+            const nextSteps = document.getElementById('next-steps').value;
+            const questionsDependencies = document.getElementById('questions-dependencies').value;
+
+            const output = `Date: ${date}\nProject: ${projectName}\n\n✅ Progress\n${progressSummary}\n\n📌 Status\n${currentStatus}\n\n➡️ Next Steps\n${nextSteps}\n\n🚧 Blockers\n${questionsDependencies}`;
+
+            document.getElementById('output-text').textContent = output;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output-text').textContent;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('Update copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy text: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
