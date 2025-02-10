@@ -1,3 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naming Protocol Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+        header {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: invert(1); /* Invert colors to make logo white */
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #37116E; /* Darker purple */
+            transform: scale(1.05);
+        }
+        .output {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .copy-btn {
+            background-color: #28A745; /* Green for copy button */
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green */
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            button, .copy-btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="2023_Southwestern_Law_School_Logo_Black.png" alt="Southwestern Law School Logo">
+    <h1>Naming Protocol Generator</h1>
+</header>
+
+<div class="container">
+    <form id="namingForm">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName" placeholder="Enter project name">
+
+        <label for="clientName">Client Name/Entity:</label>
+        <input type="text" id="clientName" placeholder="Enter client name">
+
+        <label for="documentType">Type of Document:</label>
+        <select id="documentType">
+            <option value="Certificate of Engagement">Certificate of Engagement</option>
+            <option value="Certificate of Employment">Certificate of Employment</option>
+            <option value="Certificate of Authorship">Certificate of Authorship</option>
+            <option value="Materials Release">Materials Release</option>
+            <option value="Producer Services Agreement">Producer Services Agreement</option>
+            <option value="Alternative Dispute Provisions">Alternative Dispute Provisions</option>
+            <option value="Collaboration Agreement">Collaboration Agreement</option>
+            <option value="Composer Agreement">Composer Agreement</option>
+            <option value="Combined Master Use/Synch License">Combined Master Use/Synch License</option>
+            <option value="Material Correspondence">Material Correspondence</option>
+            <option value="Clinician Time Sheet">Clinician Time Sheet</option>
+            <option value="Example Agreement">Example Agreement</option>
+        </select>
+
+        <label for="date">Date (YYYYMMDD or Week 1, Week 2, etc.):</label>
+        <input type="text" id="date" placeholder="Enter date or week">
+
+        <label for="initials">Your Initials or SWLSC:</label>
+        <input type="text" id="initials" placeholder="Enter your initials">
+
+        <label for="version">Version:</label>
+        <input type="text" id="version" placeholder="Enter version (e.g., V1, V2)">
+
+        <label for="status">Status (optional):</label>
+        <select id="status">
+            <option value="">None</option>
+            <option value="redline">Redline</option>
+            <option value="clean">Clean</option>
+            <option value="execution">Execution Copy</option>
+            <option value="PE">Partially Executed</option>
+            <option value="FE">Fully Executed</option>
+        </select>
+
+        <button type="button" onclick="generateName()">Generate Name</button>
+    </form>
+
+    <h2>Generated Name:</h2>
+    <div class="output" id="output"></div>
+    <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+</div>
+
+<footer>
+    <p>Designed and Developed by Nolan Silverstein</p>
+</footer>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const today = new Date();
@@ -50,3 +214,6 @@
         });
     }
 </script>
+
+</body>
+</html>
