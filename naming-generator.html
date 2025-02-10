@@ -39,6 +39,14 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .copy-btn {
+            background-color: #28A745;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -58,7 +66,7 @@
             <option value="Certificate of Engagement">Certificate of Engagement</option>
             <option value="Certificate of Employment">Certificate of Employment</option>
             <option value="Certificate of Authorship">Certificate of Authorship</option>
-            <option value="Certificate of Authorship">Materials Release</option>
+            <option value="Materials Release">Materials Release</option>
             <option value="Producer Services Agreement">Producer Services Agreement</option>
             <option value="Alternative Dispute Provisions">Alternative Dispute Provisions</option>
             <option value="Collaboration Agreement">Collaboration Agreement</option>
@@ -93,6 +101,7 @@
 
     <h2>Generated Name:</h2>
     <div class="output" id="output"></div>
+    <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
 </div>
 
 <script>
@@ -127,6 +136,15 @@
         }
 
         document.getElementById('output').textContent = generatedName;
+    }
+
+    function copyToClipboard() {
+        const outputText = document.getElementById('output').textContent;
+        navigator.clipboard.writeText(outputText).then(() => {
+            alert('Generated name copied to clipboard!');
+        }).catch(err => {
+            alert('Failed to copy text: ' + err);
+        });
     }
 </script>
 
