@@ -7,20 +7,34 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
         }
-        .update-container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .header {
+        header {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            padding: 10px 0;
             text-align: center;
-            margin-bottom: 20px;
+        }
+        header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: invert(1); /* Invert colors to make logo white */
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .section {
             margin-bottom: 20px;
@@ -28,138 +42,163 @@
         .section h2 {
             font-size: 1.2rem;
             margin-bottom: 10px;
-            color: #333;
+            color: #4B0082;
         }
-        .input-field {
+        .input-field, textarea {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
+            padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 1rem;
         }
         .submit-btn {
             display: block;
             width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
+            padding: 15px;
+            background-color: #4B0082; /* Purple color */
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .submit-btn:hover {
-            background-color: #0056b3;
+            background-color: #37116E; /* Darker purple */
+            transform: scale(1.05);
         }
         .output-container {
             margin-top: 20px;
-            padding: 15px;
+            padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #f9f9f9;
+            font-family: monospace;
         }
         .copy-btn {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             background-color: #28A745;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .copy-btn:hover {
             background-color: #218838;
+            transform: scale(1.05);
         }
         footer {
             text-align: center;
-            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
             font-size: 0.9rem;
             color: #555;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .submit-btn, .copy-btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="update-container">
-        <div class="header">
-            <h1>Daily Update - For Slack</h1>
-            <label><strong>Date:</strong>
-                <input type="date" id="update-date" class="input-field" />
-            </label>
-            <label><strong>Project/Task Name:</strong>
-                <input type="text" id="project-name" class="input-field" placeholder="Enter project/task name" />
-            </label>
-        </div>
 
-        <div class="section">
-            <h2>Progress</h2>
-            <textarea id="progress-summary" class="input-field" rows="5" placeholder="Summarize key actions completed"></textarea>
-        </div>
+<header>
+    <img src="2023_Southwestern_Law_School_Logo_Black.png" alt="Southwestern Law School Logo">
+    <h1>Daily Update Template</h1>
+</header>
 
-        <div class="section">
-            <h2>Status</h2>
-            <textarea id="current-status" class="input-field" rows="5" placeholder="Describe the current status of the project"></textarea>
-        </div>
-
-        <div class="section">
-            <h2>Next Steps</h2>
-            <textarea id="next-steps" class="input-field" rows="5" placeholder="List the next immediate actions"></textarea>
-        </div>
-
-        <div class="section">
-            <h2>Blockers</h2>
-            <textarea id="questions-dependencies" class="input-field" rows="5" placeholder="Note any outstanding questions or dependencies"></textarea>
-        </div>
-
-        <button class="submit-btn" onclick="generateUpdate()">Generate Update</button>
-
-        <div class="output-container" id="output-container">
-            <h2>Generated Update</h2>
-            <pre id="output-text"></pre>
-        </div>
-
-        <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+<div class="container">
+    <div class="section">
+        <label><strong>Date:</strong>
+            <input type="date" id="update-date" class="input-field" />
+        </label>
+        <label><strong>Project/Task Name:</strong>
+            <input type="text" id="project-name" class="input-field" placeholder="Enter project/task name" />
+        </label>
     </div>
 
-    <footer>
-        <p>Designed and Developed by Nolan Silverstein</p>
-    </footer>
+    <div class="section">
+        <h2>Progress</h2>
+        <textarea id="progress-summary" class="input-field" rows="5" placeholder="Summarize key actions completed"></textarea>
+    </div>
 
-    <script>
-        // Automatically fill the current date using local time
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
-            const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
-            const formattedDate = `${year}-${month}-${day}`;
-            document.getElementById('update-date').value = formattedDate;
+    <div class="section">
+        <h2>Status</h2>
+        <textarea id="current-status" class="input-field" rows="5" placeholder="Describe the current status of the project"></textarea>
+    </div>
+
+    <div class="section">
+        <h2>Next Steps</h2>
+        <textarea id="next-steps" class="input-field" rows="5" placeholder="List the next immediate actions"></textarea>
+    </div>
+
+    <div class="section">
+        <h2>Blockers</h2>
+        <textarea id="questions-dependencies" class="input-field" rows="5" placeholder="Note any outstanding questions or dependencies"></textarea>
+    </div>
+
+    <button class="submit-btn" onclick="generateUpdate()">Generate Update</button>
+
+    <div class="output-container" id="output-container">
+        <h2>Generated Update</h2>
+        <pre id="output-text"></pre>
+    </div>
+
+    <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+</div>
+
+<footer>
+    <p>Designed and Developed by Nolan Silverstein</p>
+</footer>
+
+<script>
+    // Automatically fill the current date using local time
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
+        const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
+        const formattedDate = `${year}-${month}-${day}`;
+        document.getElementById('update-date').value = formattedDate;
+    });
+
+    function generateUpdate() {
+        const date = document.getElementById('update-date').value;
+        const projectName = document.getElementById('project-name').value;
+        const progressSummary = document.getElementById('progress-summary').value;
+        const currentStatus = document.getElementById('current-status').value;
+        const nextSteps = document.getElementById('next-steps').value;
+        const questionsDependencies = document.getElementById('questions-dependencies').value;
+
+        const output = `Date: ${date}\nProject: ${projectName}\n\n✅ Progress\n${progressSummary}\n\n📌 Status\n${currentStatus}\n\n➡️ Next Steps\n${nextSteps}\n\n🚧 Blockers\n${questionsDependencies}`;
+
+        document.getElementById('output-text').textContent = output;
+    }
+
+    function copyToClipboard() {
+        const outputText = document.getElementById('output-text').textContent;
+        navigator.clipboard.writeText(outputText).then(() => {
+            alert('Update copied to clipboard!');
+        }).catch(err => {
+            alert('Failed to copy text: ' + err);
         });
+    }
+</script>
 
-        function generateUpdate() {
-            const date = document.getElementById('update-date').value;
-            const projectName = document.getElementById('project-name').value;
-            const progressSummary = document.getElementById('progress-summary').value;
-            const currentStatus = document.getElementById('current-status').value;
-            const nextSteps = document.getElementById('next-steps').value;
-            const questionsDependencies = document.getElementById('questions-dependencies').value;
-
-            const output = `Date: ${date}\nProject: ${projectName}\n\n✅ Progress\n${progressSummary}\n\n📌 Status\n${currentStatus}\n\n➡️ Next Steps\n${nextSteps}\n\n🚧 Blockers\n${questionsDependencies}`;
-
-            document.getElementById('output-text').textContent = output;
-        }
-
-        function copyToClipboard() {
-            const outputText = document.getElementById('output-text').textContent;
-            navigator.clipboard.writeText(outputText).then(() => {
-                alert('Update copied to clipboard!');
-            }).catch(err => {
-                alert('Failed to copy text: ' + err);
-            });
-        }
-    </script>
 </body>
 </html>
