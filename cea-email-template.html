@@ -59,6 +59,13 @@
             white-space: pre-wrap;
             font-family: monospace;
         }
+        .copy-btn {
+            background-color: #28A745;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +87,7 @@
 
     <h2>Generated Email Template:</h2>
     <div class="output" id="output"></div>
+    <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
 </div>
 
 <script>
@@ -87,19 +95,18 @@
         const clientName = document.getElementById('clientName').value.trim();
         const clientEmail = document.getElementById('clientEmail').value.trim();
 
-        const emailTemplate = `Dear Professor Ravid:
-
-Please find attached a CEA and draft message, ready for DocuSign.
-
-Client (${clientName}) email: ${clientEmail}
-
-Dear ${clientName}:
-
-Attached please find the Client Engagement Agreement, from the Southwestern Law School Entertainment & the Arts Legal Clinic, ready for your signature. The Clinic can begin its pro bono services following your signature. You will receive a signed copy for your records.
-
-On behalf of the Clinic,`;
+        const emailTemplate = `Dear Professor Ravid:\n\nPlease find attached a CEA and draft message, ready for DocuSign.\n\nClient (${clientName}) email: ${clientEmail}\n\nDear ${clientName}:\n\nAttached please find the Client Engagement Agreement, from the Southwestern Law School Entertainment & the Arts Legal Clinic, ready for your signature. The Clinic can begin its pro bono services following your signature. You will receive a signed copy for your records.\n\nOn behalf of the Clinic,`;
 
         document.getElementById('output').textContent = emailTemplate;
+    }
+
+    function copyToClipboard() {
+        const outputText = document.getElementById('output').textContent;
+        navigator.clipboard.writeText(outputText).then(() => {
+            alert('Email template copied to clipboard!');
+        }).catch(err => {
+            alert('Failed to copy text: ' + err);
+        });
     }
 </script>
 
