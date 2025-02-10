@@ -188,12 +188,10 @@
 
         let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}`;
 
-        if (initials) {
-            generatedName += `(${initials})`;
+        if (initials || version) {
+            generatedName += `(${[initials, version].filter(Boolean).join(' ')})`;
         }
-        if (version) {
-            generatedName += `(${version})`;
-        }
+
 
         if (status) {
             generatedName += `_${status}`;
