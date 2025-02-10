@@ -173,32 +173,32 @@
     });
 
     function generateName() {
-        const projectName = document.getElementById('projectName').value.trim();
-        const clientName = document.getElementById('clientName').value.trim();
-        const documentType = document.getElementById('documentType').value;
-        const date = document.getElementById('date').value.trim();
-        const initials = document.getElementById('initials').value.trim();
-        const version = document.getElementById('version').value.trim();
-        const status = document.getElementById('status').value;
+    const projectName = document.getElementById('projectName').value.trim();
+    const clientName = document.getElementById('clientName').value.trim();
+    const documentType = document.getElementById('documentType').value;
+    const date = document.getElementById('date').value.trim();
+    const initials = document.getElementById('initials').value.trim();
+    const version = document.getElementById('version').value.trim();
+    const status = document.getElementById('status').value;
 
-        if (!projectName && !clientName) {
-            alert('Please enter either a Project Name or a Client Name.');
-            return;
-        }
-
-        let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}`;
-
-        if (initials || version) {
-            generatedName += `(${[initials, version].filter(Boolean).join(' ')})`;
-        }
-
-
-        if (status) {
-            generatedName += `_${status}`;
-        }
-
-        document.getElementById('output').textContent = generatedName;
+    if (!projectName && !clientName) {
+        alert('Please enter either a Project Name or a Client Name.');
+        return;
     }
+
+    let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}_`;
+
+    if (initials || version) {
+        generatedName += `(${[initials, version].filter(Boolean).join(' ')})`;
+    }
+
+    if (status) {
+        generatedName += `_${status}`;
+    }
+
+    document.getElementById('output').textContent = generatedName;
+}
+
 
     function copyToClipboard() {
         const outputText = document.getElementById('output').textContent;
