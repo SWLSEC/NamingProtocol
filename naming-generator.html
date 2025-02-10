@@ -7,11 +7,34 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+        header {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: invert(1); /* Invert colors to make logo white */
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
@@ -24,36 +47,67 @@
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 1rem;
         }
         button {
-            background-color: #007BFF;
+            background-color: #4B0082; /* Purple color */
             color: white;
+            font-weight: bold;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #37116E; /* Darker purple */
+            transform: scale(1.05);
         }
         .output {
-            padding: 10px;
+            padding: 15px;
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
             white-space: pre-wrap;
+            font-family: monospace;
         }
         .copy-btn {
-            background-color: #28A745;
+            background-color: #28A745; /* Green for copy button */
             margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .copy-btn:hover {
-            background-color: #218838;
+            background-color: #218838; /* Darker green */
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            button, .copy-btn {
+                font-size: 1rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<header>
+    <img src="2023_Southwestern_Law_School_Logo_Black.png" alt="Southwestern Law School Logo">
     <h1>Naming Protocol Generator</h1>
+</header>
+
+<div class="container">
     <form id="namingForm">
         <label for="projectName">Project Name:</label>
         <input type="text" id="projectName" placeholder="Enter project name">
@@ -104,6 +158,10 @@
     <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
 </div>
 
+<footer>
+    <p>Designed and Developed by Nolan Silverstein</p>
+</footer>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const today = new Date();
@@ -115,38 +173,4 @@
     });
 
     function generateName() {
-        const projectName = document.getElementById('projectName').value.trim();
-        const clientName = document.getElementById('clientName').value.trim();
-        const documentType = document.getElementById('documentType').value;
-        const date = document.getElementById('date').value.trim();
-        const initials = document.getElementById('initials').value.trim();
-        const version = document.getElementById('version').value.trim();
-        const status = document.getElementById('status').value;
-
-        let generatedName = `${projectName || clientName}_${documentType}_${date}`;
-
-        if (initials) {
-            generatedName += `_${initials}`;
-        }
-        if (version) {
-            generatedName += `_${version}`;
-        }
-        if (status) {
-            generatedName += `_${status}`;
-        }
-
-        document.getElementById('output').textContent = generatedName;
-    }
-
-    function copyToClipboard() {
-        const outputText = document.getElementById('output').textContent;
-        navigator.clipboard.writeText(outputText).then(() => {
-            alert('Generated name copied to clipboard!');
-        }).catch(err => {
-            alert('Failed to copy text: ' + err);
-        });
-    }
-</script>
-
-</body>
-</html>
+        const projectName = docume
