@@ -119,6 +119,13 @@
     </div>
 
     <script>
+        // Automatically fill the current date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('update-date').value = formattedDate;
+        });
+
         function generateUpdate() {
             const date = document.getElementById('update-date').value;
             const projectName = document.getElementById('project-name').value;
