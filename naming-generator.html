@@ -172,7 +172,7 @@
         document.getElementById('date').value = formattedDate;
     });
 
-    function generateName() {
+  function generateName() {
     const projectName = document.getElementById('projectName').value.trim();
     const clientName = document.getElementById('clientName').value.trim();
     const documentType = document.getElementById('documentType').value;
@@ -186,18 +186,19 @@
         return;
     }
 
-    let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}_`;
+    let generatedName = `${projectName}${clientName ? '_' + clientName : ''}_${documentType}_${date}`;
 
     if (initials || version) {
-        generatedName += `(${[initials, version].filter(Boolean).join(' ')})`;
+        generatedName += ` (${[initials, version].filter(Boolean).join(' ')})`;
     }
 
     if (status) {
-        generatedName += `_${status}`;
+        generatedName += ` ${status}`;
     }
 
     document.getElementById('output').textContent = generatedName;
 }
+
 
 
     function copyToClipboard() {
