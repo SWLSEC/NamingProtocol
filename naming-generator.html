@@ -173,7 +173,7 @@
         document.getElementById('date').value = formattedDate;
     });
 
- function generateName() {
+function generateName() {
     const projectName = document.getElementById('projectName').value.trim();
     const clientName = document.getElementById('clientName').value.trim();
     const documentType = document.getElementById('documentType').value;
@@ -187,8 +187,28 @@
         return;
     }
 
-    // Join parts without using underscores
-    let nameParts = [projectName, clientName, documentType, date].filter(Boolean);
+    // Mapping full document types to abbreviations
+    const documentAbbreviations = {
+        "Certificate of Engagement": "COE",
+        "Certificate of Employment": "COEM",
+        "Certificate of Authorship": "COA",
+        "Crew Deal Memo": "CDM",
+        "Materials Release": "MR",
+        "Producer Services Agreement": "PSA",
+        "Alternative Dispute Provisions": "ADP",
+        "Collaboration Agreement": "CA",
+        "Composer Agreement": "COMP",
+        "Combined Master Use/Synch License": "CMSL",
+        "Material Correspondence": "MC",
+        "Clinician Time Sheet": "CTS",
+        "Example Agreement": "EA"
+    };
+
+    // Get abbreviation or default to full document type if not mapped
+    const docAbbr = documentAbbreviations[documentType] || documentType;
+
+    // Join parts without underscores
+    let nameParts = [projectName, clientName, docAbbr, date].filter(Boolean);
     let generatedName = nameParts.join(' ');
 
     if (initials || version) {
