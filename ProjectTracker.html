@@ -102,8 +102,7 @@
       <button onclick="exportToHTML()">Export to HTML</button>
       <button onclick="printToPNGMain()">Print to PNG</button>
       <button onclick="saveToCSV()">Save to CSV</button>
-      <button onclick="copyTableToClipboard()">Copy to Clipboard (HTML)</button>
-      <button onclick="copyTableToSlack()">Copy to Slack</button>
+      <button onclick="copyTableToClipboard()">Copy to Clipboard</button>
     </div>
 
     <!-- Main table -->
@@ -173,138 +172,7 @@
     }
 
     /********************************************************
-     * Export current table data to a new HTML page
-     ********************************************************/
-    function exportToHTML() {
-      let htmlStart = '<!DOCTYPE html>'
-        + '<html lang="en">'
-        + '<head>'
-        + '  <meta charset="UTF-8">'
-        + '  <meta name="viewport" content="width=device-width,initial-scale=1.0">'
-        + '  <title>Exported Projects</title>'
-        + '  <style>'
-        + '    body { font-family: Arial, sans-serif; margin: 20px; }'
-        + '    table { width: 100%; border-collapse: collapse; margin-top: 20px; }'
-        + '    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }'
-        + '    th { background-color: #4B0082; color: white; }'
-        + '    .completed { text-decoration: line-through; color: gray; background-color: #e0e0e0; }'
-        + '    .button-group { margin-bottom: 20px; }'
-        + '    button {'
-        + '      background-color: #4B0082;'
-        + '      color: white;'
-        + '      font-weight: bold;'
-        + '      border: none;'
-        + '      border-radius: 8px;'
-        + '      cursor: pointer;'
-        + '      padding: 10px;'
-        + '      margin-right: 10px;'
-        + '    }'
-        + '    button:hover { background-color: #37116E; }'
-        + '  </style>'
-        + '</head>'
-        + '<body>'
-        + '  <h2>Exported Project Tracker</h2>'
-        + '  <div class="button-group">'
-        + '    <button onclick="printToPNG()">Print to PNG</button>'
-        + '  </div>'
-        + '  <table>'
-        + '    <thead>'
-        + '      <tr>'
-        + '        <th>Complete</th>'
-        + '        <th>Project Name</th>'
-        + '        <th>Tasks Completed</th>'
-        + '        <th>Next Steps</th>'
-        + '        <th>Deadline</th>'
-        + '        <th>Notes</th>'
-        + '      </tr>'
-        + '    </thead>'
-        + '    <tbody>';
-
-      let tableRows = '';
-      const rows = document.querySelectorAll('#project-table tbody tr');
-      rows.forEach(row => {
-        const isCompleted = row.classList.contains('completed');
-        const inputs = row.querySelectorAll('input, textarea');
-
-        tableRows += '<tr class="' + (isCompleted ? 'completed' : '') + '">';
-        // First cell: checkbox
-        tableRows += '<td><input type="checkbox"'
-          + (isCompleted ? ' checked' : '')
-          + ' onclick="this.closest(\'tr\').classList.toggle(\'completed\')"></td>';
-
-        // Remaining cells: skip the 0th input (checkbox)
-        for (let i = 1; i < inputs.length; i++) {
-          let val = inputs[i].value || '';
-          tableRows += '<td>' + val + '</td>';
-        }
-        tableRows += '</tr>';
-      });
-
-      let htmlMid = tableRows
-        + '</tbody>'
-        + '</table>'
-        + '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>'
-        + '<script>'
-        + 'function printToPNG(){'
-        + '  html2canvas(document.body).then(function(canvas){'
-        + '    var link = document.createElement("a");'
-        + '    link.href = canvas.toDataURL("image/png");'
-        + '    link.download = "exported_project_tracker.png";'
-        + '    link.click();'
-        + '  });'
-        + '}'
-        + '<\/script>';
-
-      let htmlEnd = '</body></html>';
-
-      let finalHTML = htmlStart + htmlMid + htmlEnd;
-
-      // Open a new window and write the generated HTML
-      let newWindow = window.open('', '_blank');
-      newWindow.document.write(finalHTML);
-      newWindow.document.close();
-    }
-
-    /********************************************************
-     * Save table data to CSV file
-     ********************************************************/
-    function saveToCSV() {
-      const rows = document.querySelectorAll('#project-table tbody tr');
-      // CSV header
-      let csvContent = 'data:text/csv;charset=utf-8,' 
-                     + 'Complete,Project Name,Tasks Completed,Next Steps,Deadline,Notes\r\n';
-
-      rows.forEach(row => {
-        const isCompleted = row.classList.contains('completed');
-        const inputs = row.querySelectorAll('input, textarea');
-
-        // Build each row: first cell is "Yes"/"No"
-        let rowData = [];
-        rowData.push(isCompleted ? 'Yes' : 'No');
-
-        // Skip the first input (checkbox)
-        for (let i = 1; i < inputs.length; i++) {
-          let val = inputs[i].value || '';
-          // Escape any quotes for CSV
-          val = val.replace(/"/g, '""');
-          // Wrap each field in quotes
-          rowData.push(`"${val}"`);
-        }
-        csvContent += rowData.join(',') + '\r\n';
-      });
-
-      // Download the CSV
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'project_tracker.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    /********************************************************
-     * Copy table to clipboard as HTML
+     * Copy table to clipboard as HTML (main page)
      ********************************************************/
     function copyTableToClipboard() {
       const rows = document.querySelectorAll('#project-table tbody tr');
@@ -352,111 +220,56 @@
           .then(() => alert('Table copied to clipboard as HTML.'))
           .catch(err => {
             console.error('Clipboard write failed, falling back...', err);
-            fallbackCopyText(tableHTML);
+            fallbackCopyText(tableHTML, 'Table copied (fallback).');
           });
       } else {
         // Fallback if direct HTML copy is not supported
-        fallbackCopyText(tableHTML);
+        fallbackCopyText(tableHTML, 'Table copied (fallback).');
       }
     }
 
     /********************************************************
-     * Copy table as ASCII to Slack
+     * Save table data to CSV file (main page)
      ********************************************************/
-    function copyTableToSlack() {
-      // Slack doesn't support HTML tables or advanced Markdown tables.
-      // We'll build an ASCII-style table that looks aligned in a code block.
-      // That means we gather all columns, measure widths, then pad them.
-
-      const headers = ["Complete", "Project Name", "Tasks Completed", "Next Steps", "Deadline", "Notes"];
+    function saveToCSV() {
       const rows = document.querySelectorAll('#project-table tbody tr');
-      let tableData = [];
+      // CSV header
+      let csvContent = 'data:text/csv;charset=utf-8,' 
+                     + 'Complete,Project Name,Tasks Completed,Next Steps,Deadline,Notes\r\n';
 
-      // First row is the header
-      tableData.push(headers);
-
-      // Gather data from each row
       rows.forEach(row => {
         const isCompleted = row.classList.contains('completed');
         const inputs = row.querySelectorAll('input, textarea');
-        // Build array for each row
-        let rowArr = [];
-        rowArr.push(isCompleted ? "Yes" : "No");  // complete
-        // Skip first input (checkbox)
+
+        // Build each row: first cell is "Yes"/"No"
+        let rowData = [];
+        rowData.push(isCompleted ? 'Yes' : 'No');
+
+        // Skip the first input (checkbox)
         for (let i = 1; i < inputs.length; i++) {
-          // Replace newlines with spaces so it doesn't break ASCII alignment
-          let val = (inputs[i].value || "").replace(/\r?\n|\r/g, ' ');
-          rowArr.push(val);
+          let val = inputs[i].value || '';
+          // Escape quotes for CSV
+          val = val.replace(/"/g, '""');
+          // Wrap each field in quotes
+          rowData.push(`"${val}"`);
         }
-        tableData.push(rowArr);
+        csvContent += rowData.join(',') + '\r\n';
       });
 
-      // Measure max width of each column
-      let colWidths = new Array(headers.length).fill(0);
-      for (let r = 0; r < tableData.length; r++) {
-        for (let c = 0; c < headers.length; c++) {
-          colWidths[c] = Math.max(colWidths[c], tableData[r][c].length);
-        }
-      }
-
-      // Helper to pad each cell
-      function padCell(str, width) {
-        // Right-pad with spaces
-        return str + ' '.repeat(width - str.length);
-      }
-
-      // Build the ASCII table lines
-      let lines = [];
-      // We'll wrap everything in triple backticks for Slack code block
-      lines.push("```");
-
-      // Build a separator line like +-----+-------+
-      function buildSeparator() {
-        let sep = "+";
-        for (let c = 0; c < colWidths.length; c++) {
-          sep += "-".repeat(colWidths[c] + 2) + "+";
-        }
-        return sep;
-      }
-
-      // Separator before header
-      lines.push(buildSeparator());
-
-      // Header row
-      let headerLine = "|";
-      for (let c = 0; c < headers.length; c++) {
-        headerLine += " " + padCell(headers[c], colWidths[c]) + " |";
-      }
-      lines.push(headerLine);
-
-      // Separator after header
-      lines.push(buildSeparator());
-
-      // Data rows
-      for (let r = 1; r < tableData.length; r++) {
-        let rowLine = "|";
-        for (let c = 0; c < colWidths.length; c++) {
-          let cellVal = tableData[r][c];
-          rowLine += " " + padCell(cellVal, colWidths[c]) + " |";
-        }
-        lines.push(rowLine);
-      }
-
-      // Final separator
-      lines.push(buildSeparator());
-      lines.push("```");
-
-      // Combine into one string
-      let finalText = lines.join("\n");
-
-      // Copy to clipboard (text)
-      fallbackCopyText(finalText, "Table copied as ASCII for Slack.");
+      // Download the CSV
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'project_tracker.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     /********************************************************
-     * Fallback for copying text (used by multiple functions)
+     * Fallback for copying text
      ********************************************************/
-    function fallbackCopyText(text, successMessage = 'Copied to clipboard.') {
+    function fallbackCopyText(text, successMessage) {
       const textArea = document.createElement('textarea');
       textArea.value = text;
       document.body.appendChild(textArea);
@@ -468,6 +281,186 @@
         console.error('Fallback: Unable to copy', err);
       }
       document.body.removeChild(textArea);
+    }
+
+    /********************************************************
+     * Export current table data to a new HTML page
+     ********************************************************/
+    function exportToHTML() {
+      // We'll build the HTML in pieces to avoid template-literal issues
+      let htmlStart = '<!DOCTYPE html>'
+        + '<html lang="en">'
+        + '<head>'
+        + '  <meta charset="UTF-8">'
+        + '  <meta name="viewport" content="width=device-width,initial-scale=1.0">'
+        + '  <title>Exported Projects</title>'
+        + '  <style>'
+        + '    body { font-family: Arial, sans-serif; margin: 20px; }'
+        + '    table { width: 100%; border-collapse: collapse; margin-top: 20px; }'
+        + '    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }'
+        + '    th { background-color: #4B0082; color: white; }'
+        + '    .completed { text-decoration: line-through; color: gray; background-color: #e0e0e0; }'
+        + '    .button-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }'
+        + '    button {'
+        + '      background-color: #4B0082;'
+        + '      color: white;'
+        + '      font-weight: bold;'
+        + '      border: none;'
+        + '      border-radius: 8px;'
+        + '      cursor: pointer;'
+        + '      padding: 10px 16px;'
+        + '      font-size: 1rem;'
+        + '      transition: background-color 0.3s ease, transform 0.2s ease;'
+        + '    }'
+        + '    button:hover { background-color: #37116E; transform: scale(1.05); }'
+        + '  </style>'
+        + '</head>'
+        + '<body>'
+        + '  <h2>Exported Project Tracker</h2>'
+        + '  <div class="button-group">'
+        + '    <button onclick="printToPNG()">Print to PNG</button>'
+        + '    <button onclick="saveToCSVExported()">Save to CSV</button>'
+        + '    <button onclick="copyTableToClipboardExported()">Copy to Clipboard</button>'
+        + '  </div>'
+        + '  <table id="exported-table">'
+        + '    <thead>'
+        + '      <tr>'
+        + '        <th>Complete</th>'
+        + '        <th>Project Name</th>'
+        + '        <th>Tasks Completed</th>'
+        + '        <th>Next Steps</th>'
+        + '        <th>Deadline</th>'
+        + '        <th>Notes</th>'
+        + '      </tr>'
+        + '    </thead>'
+        + '    <tbody>';
+
+      // Gather rows from the main table
+      let tableRows = '';
+      const rows = document.querySelectorAll('#project-table tbody tr');
+      rows.forEach(row => {
+        const isCompleted = row.classList.contains('completed');
+        const inputs = row.querySelectorAll('input, textarea');
+
+        tableRows += '<tr class="' + (isCompleted ? 'completed' : '') + '">';
+        // First cell: checkbox
+        tableRows += '<td><input type="checkbox"'
+          + (isCompleted ? ' checked' : '')
+          + ' onclick="toggleCompletionExported(this)"></td>';
+
+        // Remaining cells: skip the 0th input (checkbox)
+        for (let i = 1; i < inputs.length; i++) {
+          let val = inputs[i].value || '';
+          tableRows += '<td>' + val + '</td>';
+        }
+        tableRows += '</tr>';
+      });
+
+      let htmlMid = tableRows
+        + '</tbody>'
+        + '</table>'
+        // Insert scripts for PNG, CSV, Clipboard in the exported page
+        + '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>'
+        + '<script>'
+        + '  function toggleCompletionExported(checkbox) {'
+        + '    const row = checkbox.closest("tr");'
+        + '    row.classList.toggle("completed", checkbox.checked);'
+        + '  }'
+        + '  function printToPNG(){'
+        + '    html2canvas(document.body).then(function(canvas){'
+        + '      var link = document.createElement("a");'
+        + '      link.href = canvas.toDataURL("image/png");'
+        + '      link.download = "exported_project_tracker.png";'
+        + '      link.click();'
+        + '    });'
+        + '  }'
+        + '  function saveToCSVExported(){'
+        + '    const rows = document.querySelectorAll("#exported-table tbody tr");'
+        + '    let csvContent = "data:text/csv;charset=utf-8,"'
+        + '      + "Complete,Project Name,Tasks Completed,Next Steps,Deadline,Notes\\r\\n";'
+        + '    rows.forEach(row => {'
+        + '      const isCompleted = row.classList.contains("completed");'
+        + '      const cells = row.querySelectorAll("td");'
+        + '      let rowData = [];'
+        + '      // first cell => Yes/No'
+        + '      rowData.push(isCompleted ? "Yes" : "No");'
+        + '      // skip cell 0’s checkbox, but parse the text from each cell (1..5) '
+        + '      // Actually cell 0 is the checkbox input, so we read the rest.'
+        + '      // So we have 6 cells total, the first is the checkbox. We skip that for text.'
+        + '      for(let i=1; i<cells.length; i++){'
+        + '        let val = cells[i].textContent || "";'
+        + '        val = val.replace(/"/g, \'""\');'
+        + '        rowData.push(\\""\\" + val + "\\"\\");'
+        + '      }'
+        + '      csvContent += rowData.join(",") + "\\r\\n";'
+        + '    });'
+        + '    const encodedUri = encodeURI(csvContent);'
+        + '    const link = document.createElement("a");'
+        + '    link.setAttribute("href", encodedUri);'
+        + '    link.setAttribute("download", "exported_project_tracker.csv");'
+        + '    document.body.appendChild(link);'
+        + '    link.click();'
+        + '    document.body.removeChild(link);'
+        + '  }'
+        + '  function copyTableToClipboardExported(){'
+        + '    const rows = document.querySelectorAll("#exported-table tbody tr");'
+        + '    let tableHTML = \'<table border="1" style="border-collapse: collapse;">\';'
+        + '    tableHTML += "<thead><tr>"'
+        + '      + "<th>Complete</th><th>Project Name</th><th>Tasks Completed</th><th>Next Steps</th><th>Deadline</th><th>Notes</th>"'
+        + '      + "</tr></thead><tbody>";'
+        + '    rows.forEach(row => {'
+        + '      const isCompleted = row.classList.contains("completed");'
+        + '      const cells = row.querySelectorAll("td");'
+        + '      const style = isCompleted ? \' style="text-decoration: line-through; color: gray; background-color: #e0e0e0;"\' : "";'
+        + '      tableHTML += `<tr${style}>`;'
+        + '      // First cell => Yes/No'
+        + '      tableHTML += `<td>${isCompleted ? "Yes" : "No"}</td>`;'
+        + '      // The rest of the cells: skip the first (checkbox input). So cells[1..5]'
+        + '      for(let i=1; i<cells.length; i++){'
+        + '        let val = cells[i].textContent || "";'
+        + '        tableHTML += `<td>${val}</td>`;'
+        + '      }'
+        + '      tableHTML += "</tr>";'
+        + '    });'
+        + '    tableHTML += "</tbody></table>";'
+        + '    if(navigator.clipboard && navigator.clipboard.write){'
+        + '      const type = "text/html";'
+        + '      const blob = new Blob([tableHTML], { type });'
+        + '      const data = [new ClipboardItem({ [type]: blob })];'
+        + '      navigator.clipboard.write(data).then(() => {'
+        + '        alert("Table copied to clipboard as HTML.");'
+        + '      }).catch(err => {'
+        + '        console.error("Clipboard write failed, fallback...", err);'
+        + '        fallbackCopyText(tableHTML, "Table copied (fallback).");'
+        + '      });'
+        + '    } else {'
+        + '      fallbackCopyText(tableHTML, "Table copied (fallback).");'
+        + '    }'
+        + '  }'
+        // Fallback for text copying
+        + '  function fallbackCopyText(text, successMessage){'
+        + '    const textArea = document.createElement("textarea");'
+        + '    textArea.value = text;'
+        + '    document.body.appendChild(textArea);'
+        + '    textArea.select();'
+        + '    try {'
+        + '      document.execCommand("copy");'
+        + '      alert(successMessage);'
+        + '    } catch(err){'
+        + '      console.error("Fallback: Unable to copy", err);'
+        + '    }'
+        + '    document.body.removeChild(textArea);'
+        + '  }'
+        + '<\/script>';
+
+      let htmlEnd = '</body></html>';
+
+      let finalHTML = htmlStart + htmlMid + htmlEnd;
+
+      // Open a new window and write the generated HTML
+      let newWindow = window.open('', '_blank');
+      newWindow.document.write(finalHTML);
+      newWindow.document.close();
     }
   </script>
 </body>
