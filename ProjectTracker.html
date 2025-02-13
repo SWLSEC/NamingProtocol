@@ -1,170 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Project Tracker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #333;
-        }
-        header {
-            background-color: #4B0082;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-        }
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 30px;
-            background: #f9f9f9;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-        input, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        button {
-            background-color: #4B0082;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        button:hover {
-            background-color: #37116E;
-            transform: scale(1.05);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #4B0082;
-            color: white;
-        }
-        .completed {
-            text-decoration: line-through;
-            color: gray;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Project Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      color: #333;
+    }
+    header {
+      background-color: #4B0082;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 30px;
+      background: #f9f9f9;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #4B0082;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background-color: #37116E;
+      transform: scale(1.05);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #4B0082;
+      color: white;
+    }
+    /* Updated .completed class to grey out the entire row */
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+      background-color: #e0e0e0;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Daily Project Tracker</h1>
-    </header>
-    <div class="container">
-        <button onclick="addProject()">Add Project</button>
-        <div id="project-list"></div>
-        <button onclick="exportToHTML()">Export to HTML</button>
-        <table id="project-table">
-            <thead>
-                <tr>
-                    <th>Complete</th>
-                    <th>Project Name</th>
-                    <th>Tasks Completed</th>
-                    <th>Next Steps</th>
-                    <th>Deadline</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-    
-    <script>
-        function addProject() {
-            const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
-            const row = table.insertRow();
-            row.innerHTML = `
-                <td><input type="checkbox" onclick="toggleCompletion(this)"></td>
-                <td><input type="text"></td>
-                <td><textarea></textarea></td>
-                <td><textarea></textarea></td>
-                <td><input type="date"></td>
-                <td><textarea></textarea></td>
-                <td><button onclick="removeRow(this)">Remove</button></td>
-            `;
+  <header>
+    <h1>Daily Project Tracker</h1>
+  </header>
+  <div class="container">
+    <button onclick="addProject()">Add Project</button>
+    <div id="project-list"></div>
+    <button onclick="exportToHTML()">Export to HTML</button>
+    <table id="project-table">
+      <thead>
+        <tr>
+          <th>Complete</th>
+          <th>Project Name</th>
+          <th>Tasks Completed</th>
+          <th>Next Steps</th>
+          <th>Deadline</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    function addProject() {
+      const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td><input type="checkbox" onclick="toggleCompletion(this)"></td>
+        <td><input type="text"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td><input type="date"></td>
+        <td><textarea></textarea></td>
+        <td><button onclick="removeRow(this)">Remove</button></td>
+      `;
+    }
+
+    function removeRow(button) {
+      button.parentElement.parentElement.remove();
+    }
+
+    function toggleCompletion(checkbox) {
+      const row = checkbox.parentElement.parentElement;
+      row.classList.toggle("completed", checkbox.checked);
+    }
+
+    function exportToHTML() {
+      let htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exported Projects</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #4B0082; color: white; }
+    .completed { text-decoration: line-through; color: gray; background-color: #e0e0e0; }
+    button {
+      background-color: #4B0082;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Exported Project Tracker</h2>
+  <button onclick="printToPNG()">Print to PNG</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Complete</th>
+        <th>Project Name</th>
+        <th>Tasks Completed</th>
+        <th>Next Steps</th>
+        <th>Deadline</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>`;
+      
+      document.querySelectorAll("#project-table tbody tr").forEach(row => {
+        let inputs = row.querySelectorAll("input, textarea");
+        let isCompleted = row.classList.contains("completed");
+        htmlContent += `<tr class="${isCompleted ? 'completed' : ''}">`;
+        // Checkbox cell
+        htmlContent += `<td><input type="checkbox" ${isCompleted ? "checked" : ""} onclick="this.closest('tr').classList.toggle('completed')"></td>`;
+        // Other cells (skip first input which is the checkbox)
+        for (let i = 1; i < inputs.length; i++) {
+          htmlContent += `<td>${inputs[i].value}</td>`;
         }
-        
-        function removeRow(button) {
-            button.parentElement.parentElement.remove();
-        }
-        
-        function toggleCompletion(checkbox) {
-            const row = checkbox.parentElement.parentElement;
-            row.classList.toggle("completed", checkbox.checked);
-        }
-        
-        function exportToHTML() {
-            let htmlContent = `<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Exported Projects</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-                    th { background-color: #4B0082; color: white; }
-                    .completed { text-decoration: line-through; color: gray; }
-                </style>
-            </head>
-            <body>
-                <h2>Exported Project Tracker</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Complete</th>
-                            <th>Project Name</th>
-                            <th>Tasks Completed</th>
-                            <th>Next Steps</th>
-                            <th>Deadline</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-            
-            document.querySelectorAll("#project-table tbody tr").forEach(row => {
-                let cells = row.querySelectorAll("td input, td textarea");
-                let checked = row.classList.contains("completed") ? "checked" : "";
-                htmlContent += `<tr class="${checked ? 'completed' : ''}">`;
-                htmlContent += `<td><input type="checkbox" ${checked} onclick="this.closest('tr').classList.toggle('completed')"></td>`;
-                for (let i = 1; i < cells.length; i++) {
-                    htmlContent += `<td>${cells[i].value}</td>`;
-                }
-                htmlContent += `</tr>`;
-            });
-            
-            htmlContent += `</tbody></table></body></html>`;
-            let newWindow = window.open("", "_blank");
-            newWindow.document.write(htmlContent);
-            newWindow.document.close();
-        }
-    </script>
+        htmlContent += `</tr>`;
+      });
+      
+      htmlContent += `</tbody></table>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function printToPNG() {
+      html2canvas(document.body).then(function(canvas) {
+        var link = document.createElement('a');
+        link.href = canvas.toDataURL("image/png");
+        link.download = 'exported_project_tracker.png';
+        link.click();
+      });
+    }
+  <\/script>
+</body>
+</html>`;
+      
+      let newWindow = window.open("", "_blank");
+      newWindow.document.write(htmlContent);
+      newWindow.document.close();
+    }
+  </script>
 </body>
 </html>
