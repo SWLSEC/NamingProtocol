@@ -66,6 +66,10 @@
             background-color: #4B0082;
             color: white;
         }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -75,10 +79,11 @@
     <div class="container">
         <button onclick="addProject()">Add Project</button>
         <div id="project-list"></div>
-        <button onclick="exportTable()">Export to CSV</button>
+        <button onclick="exportToHTML()">Export to HTML</button>
         <table id="project-table">
             <thead>
                 <tr>
+                    <th>Complete</th>
                     <th>Project Name</th>
                     <th>Tasks Completed</th>
                     <th>Next Steps</th>
@@ -95,6 +100,7 @@
             const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
             const row = table.insertRow();
             row.innerHTML = `
+                <td><input type="checkbox" onclick="toggleCompletion(this)"></td>
                 <td><input type="text"></td>
                 <td><textarea></textarea></td>
                 <td><textarea></textarea></td>
@@ -108,21 +114,56 @@
             button.parentElement.parentElement.remove();
         }
         
-        function exportTable() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            let rows = document.querySelectorAll("table tr");
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let data = [];
-                cols.forEach(col => data.push(col.innerText));
-                csvContent += data.join(",") + "\n";
+        function toggleCompletion(checkbox) {
+            const row = checkbox.parentElement.parentElement;
+            row.classList.toggle("completed", checkbox.checked);
+        }
+        
+        function exportToHTML() {
+            let htmlContent = `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Exported Projects</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+                    th { background-color: #4B0082; color: white; }
+                    .completed { text-decoration: line-through; color: gray; }
+                </style>
+            </head>
+            <body>
+                <h2>Exported Project Tracker</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Complete</th>
+                            <th>Project Name</th>
+                            <th>Tasks Completed</th>
+                            <th>Next Steps</th>
+                            <th>Deadline</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            document.querySelectorAll("#project-table tbody tr").forEach(row => {
+                let cells = row.querySelectorAll("td input, td textarea");
+                let checked = row.classList.contains("completed") ? "checked" : "";
+                htmlContent += `<tr class="${checked ? 'completed' : ''}">`;
+                htmlContent += `<td><input type="checkbox" ${checked} onclick="this.closest('tr').classList.toggle('completed')"></td>`;
+                for (let i = 1; i < cells.length; i++) {
+                    htmlContent += `<td>${cells[i].value}</td>`;
+                }
+                htmlContent += `</tr>`;
             });
-            let encodedUri = encodeURI(csvContent);
-            let link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "projects.csv");
-            document.body.appendChild(link);
-            link.click();
+            
+            htmlContent += `</tbody></table></body></html>`;
+            let newWindow = window.open("", "_blank");
+            newWindow.document.write(htmlContent);
+            newWindow.document.close();
         }
     </script>
 </body>
