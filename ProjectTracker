@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Project Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+        header {
+            background-color: #4B0082;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #4B0082;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #37116E;
+            transform: scale(1.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4B0082;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Daily Project Tracker</h1>
+    </header>
+    <div class="container">
+        <button onclick="addProject()">Add Project</button>
+        <div id="project-list"></div>
+        <button onclick="exportTable()">Export to CSV</button>
+        <table id="project-table">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Tasks Completed</th>
+                    <th>Next Steps</th>
+                    <th>Deadline</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <script>
+        function addProject() {
+            const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="text"></td>
+                <td><textarea></textarea></td>
+                <td><textarea></textarea></td>
+                <td><input type="date"></td>
+                <td><textarea></textarea></td>
+                <td><button onclick="removeRow(this)">Remove</button></td>
+            `;
+        }
+        
+        function removeRow(button) {
+            button.parentElement.parentElement.remove();
+        }
+        
+        function exportTable() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            let rows = document.querySelectorAll("table tr");
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td, th");
+                let data = [];
+                cols.forEach(col => data.push(col.innerText));
+                csvContent += data.join(",") + "\n";
+            });
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "projects.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+</body>
+</html>
