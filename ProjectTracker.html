@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Daily Project Tracker</title>
   <style>
+    /* Basic page styling */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -26,32 +27,8 @@
       border-radius: 15px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-    input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    button {
-      background-color: #4B0082;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    button:hover {
-      background-color: #37116E;
-      transform: scale(1.05);
-    }
+
+    /* Table styling */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -61,21 +38,55 @@
       border: 1px solid #ccc;
       padding: 10px;
       text-align: left;
+      vertical-align: top;
     }
     th {
       background-color: #4B0082;
       color: white;
     }
+
+    /* Completed row styling */
     .completed {
       text-decoration: line-through;
       color: gray;
       background-color: #e0e0e0;
     }
+
+    /* Button styling */
     .button-group {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 20px;
+    }
+    button {
+      background-color: #4B0082;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      padding: 10px 16px;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #37116E;
+      transform: scale(1.05);
+    }
+
+    /* Table input styling */
+    input.table-input,
+    textarea.table-input {
+      width: 90%;
+      box-sizing: border-box;
+      padding: 6px;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    textarea.table-input {
+      resize: vertical; /* so users can resize if needed */
+      height: 50px;     /* adjust as preferred */
     }
   </style>
 </head>
@@ -85,12 +96,16 @@
   </header>
 
   <div class="container" id="tracker-container">
+    <!-- Action buttons -->
     <div class="button-group">
       <button onclick="addProject()">Add Project</button>
       <button onclick="exportToHTML()">Export to HTML</button>
       <button onclick="printToPNGMain()">Print to PNG</button>
+      <button onclick="saveToCSV()">Save to CSV</button>
+      <button onclick="copyTableToClipboard()">Copy to Clipboard</button>
     </div>
 
+    <!-- Main table -->
     <table id="project-table">
       <thead>
         <tr>
@@ -107,37 +122,45 @@
     </table>
   </div>
 
-  <!-- html2canvas for PNG printing -->
+  <!-- html2canvas for PNG export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <script>
-    // Add a new row
+    /********************************************************
+     * Add a new row
+     ********************************************************/
     function addProject() {
       const tableBody = document.getElementById('project-table').querySelector('tbody');
       const row = tableBody.insertRow();
-
       row.innerHTML = `
         <td><input type="checkbox" onclick="toggleCompletion(this)"></td>
-        <td><input type="text"></td>
-        <td><textarea></textarea></td>
-        <td><textarea></textarea></td>
-        <td><input type="date"></td>
-        <td><textarea></textarea></td>
+        <td><input type="text" class="table-input"></td>
+        <td><textarea class="table-input"></textarea></td>
+        <td><textarea class="table-input"></textarea></td>
+        <td><input type="date" class="table-input"></td>
+        <td><textarea class="table-input"></textarea></td>
         <td><button onclick="removeRow(this)">Remove</button></td>
       `;
     }
 
-    // Remove a row
+    /********************************************************
+     * Remove a row
+     ********************************************************/
     function removeRow(button) {
       button.parentElement.parentElement.remove();
     }
 
-    // Mark row as completed/incomplete
+    /********************************************************
+     * Toggle completed row
+     ********************************************************/
     function toggleCompletion(checkbox) {
       const row = checkbox.parentElement.parentElement;
       row.classList.toggle('completed', checkbox.checked);
     }
 
-    // Print the main page content to PNG
+    /********************************************************
+     * Print the main page content to PNG
+     ********************************************************/
     function printToPNGMain() {
       const container = document.getElementById('tracker-container');
       html2canvas(container).then(canvas => {
@@ -148,9 +171,10 @@
       });
     }
 
-    // Export current table data to a new HTML page
+    /********************************************************
+     * Export current table data to a new HTML page
+     ********************************************************/
     function exportToHTML() {
-      // Build the HTML piece by piece
       let htmlStart = '<!DOCTYPE html>'
         + '<html lang="en">'
         + '<head>'
@@ -195,7 +219,6 @@
         + '    </thead>'
         + '    <tbody>';
 
-      // Gather the rows from the main table
       let tableRows = '';
       const rows = document.querySelectorAll('#project-table tbody tr');
       rows.forEach(row => {
@@ -203,43 +226,152 @@
         const inputs = row.querySelectorAll('input, textarea');
 
         tableRows += '<tr class="' + (isCompleted ? 'completed' : '') + '">';
-        // First cell is checkbox
+        // First cell: checkbox
         tableRows += '<td><input type="checkbox"'
           + (isCompleted ? ' checked' : '')
           + ' onclick="this.closest(\'tr\').classList.toggle(\'completed\')"></td>';
 
-        // Remaining cells
-        // Skip index 0 of `inputs` because that’s the checkbox
+        // Remaining cells: skip the 0th input (checkbox)
         for (let i = 1; i < inputs.length; i++) {
-          tableRows += '<td>' + (inputs[i].value || '') + '</td>';
+          let val = inputs[i].value || '';
+          tableRows += '<td>' + val + '</td>';
         }
         tableRows += '</tr>';
       });
 
       let htmlMid = tableRows
-        + '    </tbody>'
-        + '  </table>'
-        // Insert scripts
-        + '  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>'
-        + '  <script>'
-        + '    function printToPNG() {'
-        + '      html2canvas(document.body).then(function(canvas) {'
-        + '        var link = document.createElement(\'a\');'
-        + '        link.href = canvas.toDataURL(\'image/png\');'
-        + '        link.download = \'exported_project_tracker.png\';'
-        + '        link.click();'
-        + '      });'
-        + '    }'
-        + '  <\/script>';
+        + '</tbody>'
+        + '</table>'
+        + '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>'
+        + '<script>'
+        + 'function printToPNG(){'
+        + '  html2canvas(document.body).then(function(canvas){'
+        + '    var link = document.createElement("a");'
+        + '    link.href = canvas.toDataURL("image/png");'
+        + '    link.download = "exported_project_tracker.png";'
+        + '    link.click();'
+        + '  });'
+        + '}'
+        + '<\/script>';
 
       let htmlEnd = '</body></html>';
 
       let finalHTML = htmlStart + htmlMid + htmlEnd;
 
-      // Open a new window and write the HTML
+      // Open a new window and write the generated HTML
       let newWindow = window.open('', '_blank');
       newWindow.document.write(finalHTML);
       newWindow.document.close();
+    }
+
+    /********************************************************
+     * Save table data to CSV file
+     ********************************************************/
+    function saveToCSV() {
+      const rows = document.querySelectorAll('#project-table tbody tr');
+      // CSV header
+      let csvContent = 'data:text/csv;charset=utf-8,' 
+                     + 'Complete,Project Name,Tasks Completed,Next Steps,Deadline,Notes\r\n';
+
+      rows.forEach(row => {
+        const isCompleted = row.classList.contains('completed');
+        const inputs = row.querySelectorAll('input, textarea');
+
+        // Build each row: first cell is "Yes"/"No"
+        let rowData = [];
+        rowData.push(isCompleted ? 'Yes' : 'No');
+
+        // Skip the first input (checkbox)
+        for (let i = 1; i < inputs.length; i++) {
+          let val = inputs[i].value || '';
+          // Escape any quotes for CSV
+          val = val.replace(/"/g, '""');
+          // Wrap each field in quotes
+          rowData.push(`"${val}"`);
+        }
+        csvContent += rowData.join(',') + '\r\n';
+      });
+
+      // Download the CSV
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'project_tracker.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /********************************************************
+     * Copy table to clipboard as HTML
+     ********************************************************/
+    function copyTableToClipboard() {
+      const rows = document.querySelectorAll('#project-table tbody tr');
+
+      // Build HTML table string
+      let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+      tableHTML += '<thead><tr>'
+                +  '<th>Complete</th>'
+                +  '<th>Project Name</th>'
+                +  '<th>Tasks Completed</th>'
+                +  '<th>Next Steps</th>'
+                +  '<th>Deadline</th>'
+                +  '<th>Notes</th>'
+                + '</tr></thead><tbody>';
+
+      rows.forEach(row => {
+        const isCompleted = row.classList.contains('completed');
+        const inputs = row.querySelectorAll('input, textarea');
+
+        // Inline styling for "completed" effect
+        const style = isCompleted
+          ? ' style="text-decoration: line-through; color: gray; background-color: #e0e0e0;"'
+          : '';
+        tableHTML += `<tr${style}>`;
+
+        // First cell: "Yes"/"No"
+        tableHTML += `<td>${isCompleted ? 'Yes' : 'No'}</td>`;
+
+        // The rest of the cells
+        for (let i = 1; i < inputs.length; i++) {
+          let val = inputs[i].value || '';
+          tableHTML += `<td>${val}</td>`;
+        }
+        tableHTML += '</tr>';
+      });
+      tableHTML += '</tbody></table>';
+
+      // Attempt to write HTML to clipboard
+      if (navigator.clipboard && navigator.clipboard.write) {
+        const type = 'text/html';
+        const blob = new Blob([tableHTML], { type });
+        const data = [new ClipboardItem({ [type]: blob })];
+
+        navigator.clipboard.write(data)
+          .then(() => alert('Table copied to clipboard as HTML.'))
+          .catch(err => {
+            console.error('Clipboard write failed, falling back...', err);
+            fallbackCopyText(tableHTML);
+          });
+      } else {
+        // Fallback if direct HTML copy is not supported
+        fallbackCopyText(tableHTML);
+      }
+    }
+
+    // Fallback to copy text if direct HTML copy is unavailable
+    function fallbackCopyText(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('Table copied to clipboard (fallback). Pasting may show raw HTML in some apps.');
+      } catch (err) {
+        console.error('Fallback: Unable to copy', err);
+      }
+      document.body.removeChild(textArea);
     }
   </script>
 </body>
