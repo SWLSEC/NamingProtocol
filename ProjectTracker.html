@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Project Tracker</title>
   <style>
     body {
@@ -83,12 +83,14 @@
   <header>
     <h1>Daily Project Tracker</h1>
   </header>
+
   <div class="container" id="tracker-container">
     <div class="button-group">
       <button onclick="addProject()">Add Project</button>
       <button onclick="exportToHTML()">Export to HTML</button>
       <button onclick="printToPNGMain()">Print to PNG</button>
     </div>
+
     <table id="project-table">
       <thead>
         <tr>
@@ -105,11 +107,14 @@
     </table>
   </div>
 
+  <!-- html2canvas for PNG printing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
+    // Add a new row
     function addProject() {
-      const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
-      const row = table.insertRow();
+      const tableBody = document.getElementById('project-table').querySelector('tbody');
+      const row = tableBody.insertRow();
+
       row.innerHTML = `
         <td><input type="checkbox" onclick="toggleCompletion(this)"></td>
         <td><input type="text"></td>
@@ -121,100 +126,120 @@
       `;
     }
 
+    // Remove a row
     function removeRow(button) {
       button.parentElement.parentElement.remove();
     }
 
+    // Mark row as completed/incomplete
     function toggleCompletion(checkbox) {
       const row = checkbox.parentElement.parentElement;
-      row.classList.toggle("completed", checkbox.checked);
+      row.classList.toggle('completed', checkbox.checked);
     }
 
-    function exportToHTML() {
-      let htmlContent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exported Projects</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-    th { background-color: #4B0082; color: white; }
-    .completed { text-decoration: line-through; color: gray; background-color: #e0e0e0; }
-    .button-group { margin-bottom: 20px; }
-    button {
-      background-color: #4B0082;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      padding: 10px;
-      margin-right: 10px;
-    }
-    button:hover {
-      background-color: #37116E;
-    }
-  </style>
-</head>
-<body>
-  <h2>Exported Project Tracker</h2>
-  <div class="button-group">
-    <button onclick="printToPNG()">Print to PNG</button>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Complete</th>
-        <th>Project Name</th>
-        <th>Tasks Completed</th>
-        <th>Next Steps</th>
-        <th>Deadline</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>`;
-      
-      document.querySelectorAll("#project-table tbody tr").forEach(row => {
-        let inputs = row.querySelectorAll("input, textarea");
-        let isCompleted = row.classList.contains("completed");
-        htmlContent += `<tr class="${isCompleted ? 'completed' : ''}">`;
-        htmlContent += `<td><input type="checkbox" ${isCompleted ? "checked" : ""} onclick="this.closest('tr').classList.toggle('completed')"></td>`;
-        for (let i = 1; i < inputs.length; i++) {
-          htmlContent += `<td>${inputs[i].value}</td>`;
-        }
-        htmlContent += `</tr>`;
-      });
-      
-      htmlContent += `</tbody></table>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script>
-    function printToPNG() {
-      html2canvas(document.body).then(function(canvas) {
-        var link = document.createElement('a');
-        link.href = canvas.toDataURL("image/png");
-        link.download = 'exported_project_tracker.png';
-        link.click();
-      });
-    }
-  <\/script>
-</body>
-</html>`;
-      
-      let newWindow = window.open("", "_blank");
-      newWindow.document.write(htmlContent);
-      newWindow.document.close();
-    }
-
+    // Print the main page content to PNG
     function printToPNGMain() {
-      html2canvas(document.getElementById('tracker-container')).then(function(canvas) {
-        var link = document.createElement('a');
-        link.href = canvas.toDataURL("image/png");
+      const container = document.getElementById('tracker-container');
+      html2canvas(container).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
         link.download = 'project_tracker.png';
         link.click();
       });
+    }
+
+    // Export current table data to a new HTML page
+    function exportToHTML() {
+      // Build the HTML piece by piece
+      let htmlStart = '<!DOCTYPE html>'
+        + '<html lang="en">'
+        + '<head>'
+        + '  <meta charset="UTF-8">'
+        + '  <meta name="viewport" content="width=device-width,initial-scale=1.0">'
+        + '  <title>Exported Projects</title>'
+        + '  <style>'
+        + '    body { font-family: Arial, sans-serif; margin: 20px; }'
+        + '    table { width: 100%; border-collapse: collapse; margin-top: 20px; }'
+        + '    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }'
+        + '    th { background-color: #4B0082; color: white; }'
+        + '    .completed { text-decoration: line-through; color: gray; background-color: #e0e0e0; }'
+        + '    .button-group { margin-bottom: 20px; }'
+        + '    button {'
+        + '      background-color: #4B0082;'
+        + '      color: white;'
+        + '      font-weight: bold;'
+        + '      border: none;'
+        + '      border-radius: 8px;'
+        + '      cursor: pointer;'
+        + '      padding: 10px;'
+        + '      margin-right: 10px;'
+        + '    }'
+        + '    button:hover { background-color: #37116E; }'
+        + '  </style>'
+        + '</head>'
+        + '<body>'
+        + '  <h2>Exported Project Tracker</h2>'
+        + '  <div class="button-group">'
+        + '    <button onclick="printToPNG()">Print to PNG</button>'
+        + '  </div>'
+        + '  <table>'
+        + '    <thead>'
+        + '      <tr>'
+        + '        <th>Complete</th>'
+        + '        <th>Project Name</th>'
+        + '        <th>Tasks Completed</th>'
+        + '        <th>Next Steps</th>'
+        + '        <th>Deadline</th>'
+        + '        <th>Notes</th>'
+        + '      </tr>'
+        + '    </thead>'
+        + '    <tbody>';
+
+      // Gather the rows from the main table
+      let tableRows = '';
+      const rows = document.querySelectorAll('#project-table tbody tr');
+      rows.forEach(row => {
+        const isCompleted = row.classList.contains('completed');
+        const inputs = row.querySelectorAll('input, textarea');
+
+        tableRows += '<tr class="' + (isCompleted ? 'completed' : '') + '">';
+        // First cell is checkbox
+        tableRows += '<td><input type="checkbox"'
+          + (isCompleted ? ' checked' : '')
+          + ' onclick="this.closest(\'tr\').classList.toggle(\'completed\')"></td>';
+
+        // Remaining cells
+        // Skip index 0 of `inputs` because that’s the checkbox
+        for (let i = 1; i < inputs.length; i++) {
+          tableRows += '<td>' + (inputs[i].value || '') + '</td>';
+        }
+        tableRows += '</tr>';
+      });
+
+      let htmlMid = tableRows
+        + '    </tbody>'
+        + '  </table>'
+        // Insert scripts
+        + '  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>'
+        + '  <script>'
+        + '    function printToPNG() {'
+        + '      html2canvas(document.body).then(function(canvas) {'
+        + '        var link = document.createElement(\'a\');'
+        + '        link.href = canvas.toDataURL(\'image/png\');'
+        + '        link.download = \'exported_project_tracker.png\';'
+        + '        link.click();'
+        + '      });'
+        + '    }'
+        + '  <\/script>';
+
+      let htmlEnd = '</body></html>';
+
+      let finalHTML = htmlStart + htmlMid + htmlEnd;
+
+      // Open a new window and write the HTML
+      let newWindow = window.open('', '_blank');
+      newWindow.document.write(finalHTML);
+      newWindow.document.close();
     }
   </script>
 </body>
