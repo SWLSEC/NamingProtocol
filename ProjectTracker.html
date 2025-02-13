@@ -102,7 +102,8 @@
       <button onclick="exportToHTML()">Export to HTML</button>
       <button onclick="printToPNGMain()">Print to PNG</button>
       <button onclick="saveToCSV()">Save to CSV</button>
-      <button onclick="copyTableToClipboard()">Copy to Clipboard</button>
+      <button onclick="copyTableToClipboard()">Copy to Clipboard (HTML)</button>
+      <button onclick="copyTableToSlack()">Copy to Slack</button>
     </div>
 
     <!-- Main table -->
@@ -359,15 +360,110 @@
       }
     }
 
-    // Fallback to copy text if direct HTML copy is unavailable
-    function fallbackCopyText(text) {
+    /********************************************************
+     * Copy table as ASCII to Slack
+     ********************************************************/
+    function copyTableToSlack() {
+      // Slack doesn't support HTML tables or advanced Markdown tables.
+      // We'll build an ASCII-style table that looks aligned in a code block.
+      // That means we gather all columns, measure widths, then pad them.
+
+      const headers = ["Complete", "Project Name", "Tasks Completed", "Next Steps", "Deadline", "Notes"];
+      const rows = document.querySelectorAll('#project-table tbody tr');
+      let tableData = [];
+
+      // First row is the header
+      tableData.push(headers);
+
+      // Gather data from each row
+      rows.forEach(row => {
+        const isCompleted = row.classList.contains('completed');
+        const inputs = row.querySelectorAll('input, textarea');
+        // Build array for each row
+        let rowArr = [];
+        rowArr.push(isCompleted ? "Yes" : "No");  // complete
+        // Skip first input (checkbox)
+        for (let i = 1; i < inputs.length; i++) {
+          // Replace newlines with spaces so it doesn't break ASCII alignment
+          let val = (inputs[i].value || "").replace(/\r?\n|\r/g, ' ');
+          rowArr.push(val);
+        }
+        tableData.push(rowArr);
+      });
+
+      // Measure max width of each column
+      let colWidths = new Array(headers.length).fill(0);
+      for (let r = 0; r < tableData.length; r++) {
+        for (let c = 0; c < headers.length; c++) {
+          colWidths[c] = Math.max(colWidths[c], tableData[r][c].length);
+        }
+      }
+
+      // Helper to pad each cell
+      function padCell(str, width) {
+        // Right-pad with spaces
+        return str + ' '.repeat(width - str.length);
+      }
+
+      // Build the ASCII table lines
+      let lines = [];
+      // We'll wrap everything in triple backticks for Slack code block
+      lines.push("```");
+
+      // Build a separator line like +-----+-------+
+      function buildSeparator() {
+        let sep = "+";
+        for (let c = 0; c < colWidths.length; c++) {
+          sep += "-".repeat(colWidths[c] + 2) + "+";
+        }
+        return sep;
+      }
+
+      // Separator before header
+      lines.push(buildSeparator());
+
+      // Header row
+      let headerLine = "|";
+      for (let c = 0; c < headers.length; c++) {
+        headerLine += " " + padCell(headers[c], colWidths[c]) + " |";
+      }
+      lines.push(headerLine);
+
+      // Separator after header
+      lines.push(buildSeparator());
+
+      // Data rows
+      for (let r = 1; r < tableData.length; r++) {
+        let rowLine = "|";
+        for (let c = 0; c < colWidths.length; c++) {
+          let cellVal = tableData[r][c];
+          rowLine += " " + padCell(cellVal, colWidths[c]) + " |";
+        }
+        lines.push(rowLine);
+      }
+
+      // Final separator
+      lines.push(buildSeparator());
+      lines.push("```");
+
+      // Combine into one string
+      let finalText = lines.join("\n");
+
+      // Copy to clipboard (text)
+      fallbackCopyText(finalText, "Table copied as ASCII for Slack.");
+    }
+
+    /********************************************************
+     * Fallback for copying text (used by multiple functions)
+     ********************************************************/
+    function fallbackCopyText(text, successMessage = 'Copied to clipboard.') {
       const textArea = document.createElement('textarea');
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
       try {
         document.execCommand('copy');
-        alert('Table copied to clipboard (fallback). Pasting may show raw HTML in some apps.');
+        alert(successMessage);
       } catch (err) {
         console.error('Fallback: Unable to copy', err);
       }
