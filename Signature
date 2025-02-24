@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorandum: Invisible Two-Column Tables for Signature Blocks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+        header {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #4B0082;
+        }
+        .steps {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+        .code-block {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Memorandum: Invisible Two-Column Tables for Signature Blocks</h1>
+</header>
+
+<div class="container">
+    <div class="section">
+        <h2>To: Legal Clinic Staff</h2>
+        <h2>From: Nolan Silverstein</h2>
+        <h2>Date: 2/24/2025</h2>
+        <h2>Subject: Creating Invisible Two-Column Tables for Signature Blocks</h2>
+    </div>
+
+    <div class="section">
+        <h2>Purpose</h2>
+        <p>This memorandum provides instructions on how to create an invisible two-column table in Microsoft Word to format signature blocks professionally and consistently.</p>
+    </div>
+
+    <div class="section">
+        <h2>Step 1: Insert a Two-Column Table</h2>
+        <ul class="steps">
+            <li>Place your cursor where you want the signature block.</li>
+            <li>Click <strong>Insert</strong> > <strong>Table</strong>.</li>
+            <li>Select <strong>2 Columns and 1 Row</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Adjust Column Widths</h2>
+        <ul class="steps">
+            <li>Click inside the table.</li>
+            <li>Move the cursor to the boundary between the columns until the double-arrow icon appears.</li>
+            <li>Drag the column width to provide adequate space for both signatures.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: Enter Signature Information</h2>
+        <ul class="steps">
+            <li>In the left column, type the first signatory’s name and title (e.g., “John Doe, Attorney”).</li>
+            <li>In the right column, type the second signatory’s name and title.</li>
+            <li>Press <strong>Enter</strong> a few times above the names to create space for signatures.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Step 4: Remove Table Borders</h2>
+        <ul class="steps">
+            <li>Select the entire table.</li>
+            <li>Click <strong>Table Design</strong> > <strong>Borders</strong>.</li>
+            <li>Select <strong>No Border</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Step 5: Final Adjustments and Saving</h2>
+        <ul class="steps">
+            <li>Ensure the spacing looks appropriate for signatures.</li>
+            <li>Save the document as a **.docx** or **.pdf** as needed.</li>
+            <li>Distribute the document with the formatted signature block.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Conclusion</h2>
+        <p>Using invisible two-column tables ensures that signature blocks remain aligned and professional in all legal documents.</p>
+    </div>
+</div>
+
+<footer>
+    <p>For assistance, please contact Nolan Silverstein.</p>
+</footer>
+
+</body>
+</html>
