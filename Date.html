@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorandum: Inserting Auto Date/Time in Word</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+        header {
+            background-color: #4B0082; /* Purple color */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #4B0082;
+        }
+        .steps {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+        .code-block {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Memorandum: Inserting Auto Date/Time in Word</h1>
+</header>
+
+<div class="container">
+    <div class="section">
+        <h2>To: Legal Clinic Staff</h2>
+        <h2>From: Nolan Silverstein</h2>
+        <h2>Date: 2/24/2025</h2>
+        <h2>Subject: Automatically Updating Date/Time in Word Documents</h2>
+    </div>
+
+    <div class="section">
+        <h2>Purpose</h2>
+        <p>This memorandum provides instructions on how to insert an automatically updating date and time in Microsoft Word documents.</p>
+    </div>
+
+    <div class="section">
+        <h2>Step 1: Insert Auto Date/Time Using the Ribbon</h2>
+        <ul class="steps">
+            <li>Place your cursor where you want the date and time to appear.</li>
+            <li>Click <strong>Insert</strong> > <strong>Date & Time</strong>.</li>
+            <li>Choose your preferred date and time format.</li>
+            <li>Check <strong>Update automatically</strong> to ensure it updates each time the document is opened.</li>
+            <li>Click <strong>OK</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Insert Auto Date/Time Using a Field Code</h2>
+        <ul class="steps">
+            <li>Place your cursor where you want the date/time to appear.</li>
+            <li>Press <strong>Ctrl + F9</strong> to insert field brackets <code>{ }</code>.</li>
+            <li>Type <code>DATE</code> (for the current date) or <code>TIME</code> (for the current time).</li>
+            <li>Press <strong>F9</strong> to update the field.</li>
+        </ul>
+        <div class="code-block">
+            <code>{ DATE } or { TIME }</code>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: Lock or Unlock Auto Date/Time</h2>
+        <ul class="steps">
+            <li>To **lock** the date/time (prevent auto-updates), select the field and press <strong>Ctrl + F11</strong>.</li>
+            <li>To **unlock** it, select the field and press <strong>Ctrl + Shift + F11</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Conclusion</h2>
+        <p>By following these steps, you can ensure that your Word documents always reflect the current date and time without manual updates.</p>
+    </div>
+</div>
+
+<footer>
+    <p>For assistance, please contact Nolan Silverstein.</p>
+</footer>
+
+</body>
+</html>
